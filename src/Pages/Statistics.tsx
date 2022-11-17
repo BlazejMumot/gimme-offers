@@ -20,6 +20,7 @@ import {
   CardActions,
   CardContent,
   Grid,
+  IconButton,
   Typography,
 } from "@mui/material";
 import SettingsTwoToneIcon from "@mui/icons-material/SettingsTwoTone";
@@ -29,10 +30,11 @@ import StayCurrentPortraitTwoToneIcon from "@mui/icons-material/StayCurrentPortr
 import { IDailyStatistics } from "../Types/DailyStatistics/IDailyStatistics";
 import { IDailyOffersCount } from "../Types/DailyStatistics/IDailyOffersCount";
 import CustomTooltip from "../Components/Statistics/CustomTooltip";
+import { ILastDay } from "../Types/DailyStatistics/ILastDay";
 
 const Statistics = () => {
   const [data, setData] = useState<IDailyStatistics[]>([]);
-  const [lastday, setlastDay] = useState<any>();
+  const [lastday, setlastDay] = useState<ILastDay>(Object);
   const [selectedTech, setSelectedTech] = useState<string>();
   const [backendOffersCount, setBackendOffersCount] = useState<
     IDailyOffersCount[]
@@ -50,7 +52,7 @@ const Statistics = () => {
   }
 
   function createDailyOffersCount(allData: IDailyStatistics[]) {
-    let dailycount = allData.map((element) => {
+    let dailyChartCount = allData.map((element) => {
       return {
         createdAt: element.createdAt,
         count:
@@ -59,27 +61,37 @@ const Statistics = () => {
           element.mostSeniorityOffersCount,
       };
     });
-    setBackendOffersCount(dailycount);
+    setBackendOffersCount(dailyChartCount);
   }
 
   function createLastDayData(allData: IDailyStatistics[]) {
     let lastDay = allData[allData.length - 1];
     setSelectedTech(lastDay.type);
-    let lastDayToSave = [
-      {
-        columnName: lastDay.leastSeniorityOffers,
-        value: lastDay.leastSeniorityOffersCount,
-      },
-      {
-        columnName: lastDay.secondSeniorityOffers,
-        value: lastDay.secondSeniorityOffersCount,
-      },
-      {
-        columnName: lastDay.mostSeniorityOffers,
-        value: lastDay.mostSeniorityOffersCount,
-      },
-    ];
-    lastDayToSave.sort((a, b) => a.columnName.localeCompare(b.columnName));
+    let lastDayToSave: ILastDay = {
+      positionCount: [
+        {
+          columnName: lastDay.leastSeniorityOffers,
+          value: lastDay.leastSeniorityOffersCount,
+        },
+        {
+          columnName: lastDay.secondSeniorityOffers,
+          value: lastDay.secondSeniorityOffersCount,
+        },
+        {
+          columnName: lastDay.mostSeniorityOffers,
+          value: lastDay.mostSeniorityOffersCount,
+        },
+      ],
+      avgSalary: Math.round((lastDay.avgSalary + Number.EPSILON) * 100) / 100,
+      offersCount:
+        lastDay.leastSeniorityOffersCount +
+        lastDay.secondSeniorityOffersCount +
+        lastDay.mostSeniorityOffersCount,
+    };
+
+    lastDayToSave.positionCount.sort((a, b) =>
+      a.columnName.localeCompare(b.columnName)
+    );
     setlastDay(lastDayToSave);
   }
 
@@ -177,13 +189,77 @@ const Statistics = () => {
               <Typography sx={{ fontSize: 24 }} gutterBottom>
                 Daily Stats - {selectedTech}
               </Typography>
-              <BarChart width={600} height={400} data={lastday}>
-                <Tooltip content={<CustomTooltip />} />
-                <Bar dataKey="value" fill="#AEBAB1" />
-                <CartesianGrid stroke="#ccc" />
-                <XAxis dataKey="columnName" />
-                <YAxis />
-              </BarChart>
+              <Grid container>
+                <Grid item xs={8}>
+                  <BarChart
+                    width={600}
+                    height={400}
+                    data={lastday.positionCount}
+                  >
+                    <Tooltip content={<CustomTooltip />} />
+                    <Bar dataKey="value" fill="#e29578" />
+                    <CartesianGrid stroke="#ccc" />
+                    <XAxis dataKey="columnName" />
+                    <YAxis />
+                  </BarChart>
+                </Grid>
+                <Grid item xs={4}>
+                  <Card sx={{ p: 3, backgroundColor: "#ffddd2" }}>
+                    <Typography variant="h6">
+                      Offer Count: {lastday.offersCount}
+                    </Typography>
+                    <Typography variant="h6">
+                      Average Salary:{lastday.avgSalary}
+                    </Typography>
+                  </Card>
+                  <Grid container>
+                    <Grid item xs={12}>
+                      <IconButton
+                        onClick={() => {
+                          console.log();
+                        }}
+                      >
+                        <Avatar sx={{ backgroundColor: "#AEBAB1" }}>
+                          <SettingsTwoToneIcon />
+                        </Avatar>
+                      </IconButton>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <IconButton
+                        onClick={() => {
+                          console.log();
+                        }}
+                      >
+                        <Avatar sx={{ backgroundColor: "#AEBAB1" }}>
+                          <ComputerTwoToneIcon />
+                        </Avatar>
+                      </IconButton>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <IconButton
+                        onClick={() => {
+                          console.log();
+                        }}
+                      >
+                        <Avatar sx={{ backgroundColor: "#AEBAB1" }}>
+                          <LayersTwoToneIcon />
+                        </Avatar>
+                      </IconButton>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <IconButton
+                        onClick={() => {
+                          console.log();
+                        }}
+                      >
+                        <Avatar sx={{ backgroundColor: "#AEBAB1" }}>
+                          <StayCurrentPortraitTwoToneIcon />
+                        </Avatar>
+                      </IconButton>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
             </CardContent>
             {/* <CardActions>
               <Button size="small">Learn More</Button>
