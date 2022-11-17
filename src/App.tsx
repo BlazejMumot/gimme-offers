@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
-import Home from "./Pages/Home";
+import Statistics from "./Pages/Statistics";
 import Navbar from "./Common/Navbar";
 import { Box } from "@mui/material";
 
@@ -13,16 +13,16 @@ export default function App() {
         sx={{
           mt: "64px",
           ml: "220px",
-          backgroundColor: "#6d6875",
+          backgroundColor: "#edf6f9",
           height: "calc(100vh - 64px)",
         }}
       >
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Statistics />} />
+          <Route path="/" element={<Statistics />} />
+          <Route path="/" element={<Statistics />} />
+          <Route path="/" element={<Statistics />} />
+          <Route path="/statistics" element={<Statistics />} />
         </Routes>
       </Box>
     </div>
