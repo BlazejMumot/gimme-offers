@@ -12,7 +12,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { Link } from "react-router-dom";
-import { IlinksTech } from "../Pages/Types/IlinksTech";
+import { IlinksTech } from "../Types/IlinksTech";
 import ComputerTwoToneIcon from "@mui/icons-material/ComputerTwoTone";
 import StayCurrentPortraitTwoToneIcon from "@mui/icons-material/StayCurrentPortraitTwoTone";
 import LayersTwoToneIcon from "@mui/icons-material/LayersTwoTone";

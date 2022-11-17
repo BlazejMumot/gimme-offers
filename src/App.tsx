@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import Statistics from "./Pages/Statistics";
 import Navbar from "./Common/Navbar";
 import { Box } from "@mui/material";
+import RouterComponent from "./Router";
 
 export default function App() {
   return (
@@ -17,13 +18,7 @@ export default function App() {
           height: "calc(100vh - 64px)",
         }}
       >
-        <Routes>
-          <Route path="/" element={<Statistics />} />
-          <Route path="/" element={<Statistics />} />
-          <Route path="/" element={<Statistics />} />
-          <Route path="/" element={<Statistics />} />
-          <Route path="/statistics" element={<Statistics />} />
-        </Routes>
+        <RouterComponent />
       </Box>
     </div>
   );

@@ -26,9 +26,17 @@ import SettingsTwoToneIcon from "@mui/icons-material/SettingsTwoTone";
 import LayersTwoToneIcon from "@mui/icons-material/LayersTwoTone";
 import ComputerTwoToneIcon from "@mui/icons-material/ComputerTwoTone";
 import StayCurrentPortraitTwoToneIcon from "@mui/icons-material/StayCurrentPortraitTwoTone";
+import { IDailyStatistics } from "../Types/DailyStatistics/IDailyStatistics";
+import { IDailyOffersCount } from "../Types/DailyStatistics/IDailyOffersCount";
+import CustomTooltip from "../Components/Statistics/CustomTooltip";
 
 const Statistics = () => {
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<IDailyStatistics[]>([]);
+  const [lastday, setlastDay] = useState<any>();
+  const [selectedTech, setSelectedTech] = useState<string>();
+  const [backendOffersCount, setBackendOffersCount] = useState<
+    IDailyOffersCount[]
+  >([]);
 
   useEffect(() => {
     getData();
@@ -37,8 +45,45 @@ const Statistics = () => {
   async function getData() {
     let data = await StatisticsService.getStatistics();
     setData(data);
+    createLastDayData(data);
+    createDailyOffersCount(data);
   }
-  const dateFormatter = (date: any) => {
+
+  function createDailyOffersCount(allData: IDailyStatistics[]) {
+    let dailycount = allData.map((element) => {
+      return {
+        createdAt: element.createdAt,
+        count:
+          element.leastSeniorityOffersCount +
+          element.secondSeniorityOffersCount +
+          element.mostSeniorityOffersCount,
+      };
+    });
+    setBackendOffersCount(dailycount);
+  }
+
+  function createLastDayData(allData: IDailyStatistics[]) {
+    let lastDay = allData[allData.length - 1];
+    setSelectedTech(lastDay.type);
+    let lastDayToSave = [
+      {
+        columnName: lastDay.leastSeniorityOffers,
+        value: lastDay.leastSeniorityOffersCount,
+      },
+      {
+        columnName: lastDay.secondSeniorityOffers,
+        value: lastDay.secondSeniorityOffersCount,
+      },
+      {
+        columnName: lastDay.mostSeniorityOffers,
+        value: lastDay.mostSeniorityOffersCount,
+      },
+    ];
+    lastDayToSave.sort((a, b) => a.columnName.localeCompare(b.columnName));
+    setlastDay(lastDayToSave);
+  }
+
+  const dateFormatter = (date: string) => {
     return moment(date).format("DD/MM/YY");
   };
 
@@ -54,19 +99,11 @@ const Statistics = () => {
               <Typography sx={{ fontSize: 24 }} gutterBottom>
                 Backend Offers
               </Typography>
-              <LineChart width={450} height={200} data={data}>
-                <Line
-                  type="monotone"
-                  dataKey="mostSeniorityOffersCount"
-                  stroke="#8884d8"
-                />
-                <Tooltip />
+              <LineChart width={450} height={200} data={backendOffersCount}>
+                <Line type="monotone" dataKey="count" stroke="#8884d8" />
+                <Tooltip content={<CustomTooltip />} />
                 <CartesianGrid stroke="#ccc" />
-                <XAxis
-                  dataKey="createdAt"
-                  domain={[data[0].createdAt, data[data.length - 1].createdAt]}
-                  tickFormatter={dateFormatter}
-                />
+                <XAxis dataKey="createdAt" tickFormatter={dateFormatter} />
                 <YAxis />
               </LineChart>
             </CardContent>
@@ -90,13 +127,9 @@ const Statistics = () => {
                   dataKey="mostSeniorityOffersCount"
                   stroke="#8884d8"
                 />
-                <Tooltip />
+                <Tooltip content={<CustomTooltip />} />
                 <CartesianGrid stroke="#ccc" />
-                <XAxis
-                  dataKey="createdAt"
-                  domain={[data[0].createdAt, data[data.length - 1].createdAt]}
-                  tickFormatter={dateFormatter}
-                />
+                <XAxis dataKey="createdAt" tickFormatter={dateFormatter} />
                 <YAxis />
               </LineChart>
             </CardContent>
@@ -120,13 +153,9 @@ const Statistics = () => {
                   dataKey="mostSeniorityOffersCount"
                   stroke="#8884d8"
                 />
-                <Tooltip />
+                <Tooltip content={<CustomTooltip />} />
                 <CartesianGrid stroke="#ccc" />
-                <XAxis
-                  dataKey="createdAt"
-                  domain={[data[0].createdAt, data[data.length - 1].createdAt]}
-                  tickFormatter={dateFormatter}
-                />
+                <XAxis dataKey="createdAt" tickFormatter={dateFormatter} />
                 <YAxis />
               </LineChart>
             </CardContent>
@@ -146,18 +175,19 @@ const Statistics = () => {
           >
             <CardContent>
               <Typography sx={{ fontSize: 24 }} gutterBottom>
-                Daily Stats
+                Daily Stats - {selectedTech}
               </Typography>
-              {/* <BarChart width={600} height={400} data={data[0]}>
-                <Bar dataKey="mostSeniorityOffersCount" fill="green" />
+              <BarChart width={600} height={400} data={lastday}>
+                <Tooltip content={<CustomTooltip />} />
+                <Bar dataKey="value" fill="#AEBAB1" />
                 <CartesianGrid stroke="#ccc" />
-                <XAxis dataKey="name" />
+                <XAxis dataKey="columnName" />
                 <YAxis />
-              </BarChart> */}
+              </BarChart>
             </CardContent>
-            <CardActions>
+            {/* <CardActions>
               <Button size="small">Learn More</Button>
-            </CardActions>
+            </CardActions> */}
           </Card>
         </Grid>
         <Grid item xs={4}>
@@ -175,13 +205,9 @@ const Statistics = () => {
                   dataKey="mostSeniorityOffersCount"
                   stroke="#8884d8"
                 />
-                <Tooltip />
+                <Tooltip content={<CustomTooltip />} />
                 <CartesianGrid stroke="#ccc" />
-                <XAxis
-                  dataKey="createdAt"
-                  domain={[data[0].createdAt, data[data.length - 1].createdAt]}
-                  tickFormatter={dateFormatter}
-                />
+                <XAxis dataKey="createdAt" tickFormatter={dateFormatter} />
                 <YAxis />
               </LineChart>
             </CardContent>
