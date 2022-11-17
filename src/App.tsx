@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import { Route, Routes } from "react-router-dom";
+import Home from "./Pages/Home";
+import Navbar from "./Common/Navbar";
+import { Box } from "@mui/material";
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Navbar />
+      <Box
+        sx={{
+          mt: "64px",
+          ml: "220px",
+          backgroundColor: "#f5ebe0",
+          height: "calc(100vh - 64px)",
+        }}
+      >
+        <Routes>
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </Box>
     </div>
   );
 }
-
-export default App;
