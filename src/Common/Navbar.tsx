@@ -13,8 +13,33 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
+import { Link } from "react-router-dom";
+import { IlinksTech } from "../Pages/Types/IlinksTech";
+import ComputerTwoToneIcon from "@mui/icons-material/ComputerTwoTone";
+import StayCurrentPortraitTwoToneIcon from "@mui/icons-material/StayCurrentPortraitTwoTone";
+import LayersTwoToneIcon from "@mui/icons-material/LayersTwoTone";
+import SettingsTwoToneIcon from "@mui/icons-material/SettingsTwoTone";
+import BarChartTwoToneIcon from "@mui/icons-material/BarChartTwoTone";
 
 const drawerWidth = 220;
+const linksTech: IlinksTech[] = [
+  { name: "Backend Offers", link: "backend", icon: <SettingsTwoToneIcon /> },
+  {
+    name: "Frontend Offers",
+    link: "frontend",
+    icon: <ComputerTwoToneIcon />,
+  },
+  {
+    name: "Fullstack Offers",
+    link: "fullstack",
+    icon: <LayersTwoToneIcon />,
+  },
+  {
+    name: "Mobile Offers",
+    link: "mobile",
+    icon: <StayCurrentPortraitTwoToneIcon />,
+  },
+];
 
 export default function ClippedDrawer() {
   return (
@@ -24,7 +49,7 @@ export default function ClippedDrawer() {
         position="fixed"
         sx={{
           zIndex: (theme) => theme.zIndex.drawer + 1,
-          backgroundColor: "#d5bdaf",
+          backgroundColor: "#6d6875",
         }}
       >
         <Toolbar>
@@ -41,42 +66,38 @@ export default function ClippedDrawer() {
           [`& .MuiDrawer-paper`]: {
             width: drawerWidth,
             boxSizing: "border-box",
+            borderColor: "#e5989b",
           },
         }}
       >
         <Toolbar />
         <Box
-          sx={{ overflow: "auto", backgroundColor: "#e3d5ca", height: "100%" }}
+          sx={{
+            overflow: "auto",
+            backgroundColor: "#e5989b",
+            height: "100%",
+          }}
         >
           <List>
-            {[
-              "Backend Offers",
-              "Frontend Offers",
-              "Fullstack Offers",
-              "Mobile Offers",
-            ].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <InboxIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
+            {linksTech.map((element, index) => (
+              <ListItem key={index} disablePadding>
+                <ListItemButton component={Link} to={"/" + element.link}>
+                  <ListItemIcon>{element.icon}</ListItemIcon>
+                  <ListItemText primary={element.name} />
                 </ListItemButton>
               </ListItem>
             ))}
           </List>
           <Divider />
           <List>
-            {["stats"].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
+            <ListItem key={"stats"} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <BarChartTwoToneIcon />
+                </ListItemIcon>
+                <ListItemText primary={"stats"} />
+              </ListItemButton>
+            </ListItem>
           </List>
         </Box>
       </Drawer>

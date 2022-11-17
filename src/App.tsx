@@ -13,11 +13,15 @@ export default function App() {
         sx={{
           mt: "64px",
           ml: "220px",
-          backgroundColor: "#f5ebe0",
+          backgroundColor: "#6d6875",
           height: "calc(100vh - 64px)",
         }}
       >
         <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="/" element={<Home />} />
         </Routes>
       </Box>

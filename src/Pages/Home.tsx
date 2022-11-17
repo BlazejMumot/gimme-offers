@@ -10,6 +10,15 @@ import {
   Tooltip,
 } from "recharts";
 import moment from "moment";
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Grid,
+  Typography,
+} from "@mui/material";
 
 const Home = () => {
   const [data, setData] = useState<any>();
@@ -27,23 +36,39 @@ const Home = () => {
   };
 
   return (
-    <div>
-      <LineChart width={600} height={400} data={data}>
-        <Line
-          type="monotone"
-          dataKey="mostSeniorityOffersCount"
-          stroke="#8884d8"
-        />
-        <Tooltip />
-        <CartesianGrid stroke="#ccc" />
-        <XAxis
-          dataKey="createdAt"
-          domain={[data[0].createdAt, data[data.length - 1].createdAt]}
-          tickFormatter={dateFormatter}
-        />
-        <YAxis />
-      </LineChart>
-    </div>
+    <Box>
+      <Grid container>
+        <Grid item xs={4}>
+          <Card sx={{ minWidth: 275 }}>
+            <CardContent>
+              <Typography
+                sx={{ fontSize: 14 }}
+                color="text.secondary"
+                gutterBottom
+              >
+                Word of the Day
+              </Typography>
+              <Typography variant="h5" component="div">
+                be{}nev{}o{}lent
+              </Typography>
+              <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                adjective
+              </Typography>
+              <Typography variant="body2">
+                well meaning and kindly.
+                <br />
+                {'"a benevolent smile"'}
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="small">Learn More</Button>
+            </CardActions>
+          </Card>
+        </Grid>
+        <Grid item xs={4}></Grid>
+        <Grid item xs={4}></Grid>
+      </Grid>
+    </Box>
   );
 };
 export default Home;
